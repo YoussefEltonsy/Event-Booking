@@ -1,5 +1,5 @@
-import User from '../user/user.model.js';
-import { verifyToken } from '../../utils/jwt.js';
+import User from '../modules/user/user.model.js';
+import { verifyToken } from '../utils/jwt.js';
 
 // @desc Protect routes
 const protect = async (req, res, next) => {
@@ -7,8 +7,9 @@ const protect = async (req, res, next) => {
     const token = req.cookies?.jwt;
 
     if (!token) {
-      return res.status(401).json({ message: 'Not authorized, no token' });
+      return res.status(401).json({ message: 'Not authenticated, no token' });
     }
+    
 
     //verify using utils
     const decoded = verifyToken(token);
@@ -17,7 +18,7 @@ const protect = async (req, res, next) => {
 
     if (!user) {
       return res.status(401).json({
-        message: 'Not authorized, user not found',
+        message: 'Not authenticated, user not found',
       });
     }
 
@@ -26,7 +27,7 @@ const protect = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      message: 'Not authorized, token failed',
+      message: 'Not authenticated, token failed',
     });
   }
 };

@@ -33,3 +33,10 @@ const getEvent = asyncHandler(async(title)=>{
 
     return event
 })
+
+const editEvent = asyncHandler(async (title) => {
+    const event = await Event.find(title)
+    if (!event)
+        throw new Error('Cannot find event with this title')
+    
+})
